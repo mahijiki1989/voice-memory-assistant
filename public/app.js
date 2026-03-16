@@ -34,8 +34,12 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     };
 
     recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-        addMessage('Error capturing audio. Try again.', 'bot');
+        console.error('Speech recognition error:', event.error, event.message);
+        addMessage(`Microphone Error: ${event.error}`, 'bot');
+        isRecording = false;
+        micBtn.classList.remove('mic-active');
+        statusIndicator.classList.replace('bg-green-500', 'bg-red-500');
+        statusIndicator.classList.replace('shadow-[0_0_8px_rgba(34,197,94,0.8)]', 'shadow-[0_0_8px_rgba(239,68,68,0.8)]');
     };
 
     recognition.onend = () => {
@@ -45,7 +49,8 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         statusIndicator.classList.replace('shadow-[0_0_8px_rgba(34,197,94,0.8)]', 'shadow-[0_0_8px_rgba(239,68,68,0.8)]');
     };
 } else {
-    addMessage('Speech recognition is not supported in this browser.', 'bot');
+    // Attempt fallback or notify
+    addMessage('Speech recognition is natively NOT supported in this specific browser. Try using Chrome or Edge.', 'bot');
     micBtn.disabled = true;
 }
 
@@ -64,18 +69,40 @@ modeToggle.addEventListener('click', () => {
 
 micBtn.addEventListener('mousedown', startRecording);
 micBtn.addEventListener('mouseup', stopRecording);
-micBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startRecording(); }, { passive: false });
-micBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopRecording(); });
+micBtn.addEventListener('mouseleave', stopRecording); // Cancel if dragged off
+micBtn.addEventListener('touchstart', (e) => { 
+    e.preventDefault(); 
+    startRecording(); 
+}, { passive: false });
+micBtn.addEventListener('touchend', (e) => { 
+    e.preventDefault(); 
+    stopRecording(); 
+});
+micBtn.addEventListener('touchcancel', (e) => { 
+    e.preventDefault(); 
+    stopRecording(); 
+});
 
 function startRecording() {
     if (recognition && !isRecording) {
-        try { recognition.start(); } catch(e) {}
+        try { 
+            recognition.start(); 
+        } catch(e) {
+            addMessage('Error starting mic: ' + e.message, 'bot');
+            console.error(e);
+        }
+    } else if (!recognition) {
+        addMessage('Speech recognition is not supported on this browser.', 'bot');
     }
 }
 
 function stopRecording() {
     if (recognition && isRecording) {
-        recognition.stop();
+        try {
+            recognition.stop();
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 
