@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voice Memory Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#111827">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col font-sans">
+    
+    <!-- Navbar -->
+    <header class="bg-gray-800 p-4 shadow-md flex justify-between items-center">
+        <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+            Voice Memory
+        </h1>
+        <div id="status-indicator" class="h-3 w-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div>
+    </header>
+
+    <!-- Chat/Memory Area -->
+    <main class="flex-1 overflow-y-auto p-4 space-y-4" id="chatbox">
+        <div class="bot-msg bg-gray-800 p-3 rounded-2xl rounded-tl-none w-max max-w-[85%] shadow-sm">
+            <p class="text-sm">Hi! I'm your memory assistant. Hold the mic to tell me something to remember, or ask me a question!</p>
+        </div>
+    </main>
+
+    <!-- Controls Area -->
+    <footer class="p-6 pb-8 bg-gray-900 shadow-[0_-4px_15px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center gap-4">
+        
+        <div class="flex items-center gap-4 w-full px-4 mb-2">
+            <button id="mode-toggle" class="bg-gray-800 hover:bg-gray-700 text-xs py-2 px-4 rounded-full transition-colors w-full border border-gray-700">
+                Mode: <span id="current-mode" class="text-blue-400 font-semibold">Store Memory</span>
+            </button>
+        </div>
+
+        <button id="mic-btn" class="relative group w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg active:scale-95 transition-all outline-none touch-none select-none">
+            <div id="mic-pulse" class="absolute inset-0 rounded-full border-4 border-blue-500 opacity-0 scale-100"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+        </button>
+        <p class="text-gray-400 text-xs font-medium tracking-wide" id="mic-label">HOLD TO TALK</p>
+
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
