@@ -1,6 +1,7 @@
 {
   "name": "voice-memory-assistant",
   "version": "1.0.0",
+  "type": "module",
   "description": "Voice Memory Assistant PWA",
   "main": "server.js",
   "scripts": {
